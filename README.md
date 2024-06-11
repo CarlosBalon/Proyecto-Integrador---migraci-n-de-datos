@@ -1,47 +1,38 @@
-module main
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.io.FileReader;
+import java.io.IOException;
 
-import json
+public class Formula1DataMigration {
 
-struct Race {
-    id int
-    name string
-    date string
-    // Otros campos según necesidad
-}
+    public static void main(String[] args) {
+        // Leer archivos JSON
+        JSONArray constructors = readJSONFile("constructors.json");
+        JSONArray drivers = readJSONFile("drivers.json");
 
-struct Driver {
-    id int
-    name string
-    // Otros campos según necesidad
-}
+        // Realizar migración de datos a una base de datos
+        // ...
 
-// Función para leer archivos JSON
-fn read_json_file<T>(file_path string) ?T {
-    mut file := os.open_file(file_path) or {
-        return error('Failed to open file: $file_path')
+        // Realizar análisis de datos
+        // ...
+
+        // Generar visualizaciones y resultados
+        // ...
     }
-    defer {
-        file.close()
+
+    // Método para leer archivos JSON
+    public static JSONArray readJSONFile(String filePath) {
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = new JSONArray();
+        try {
+            Object obj = parser.parse(new FileReader(filePath));
+            jsonArray = (JSONArray) obj;
+            // Si solo es un objeto JSON, se puede usar JSONObject en lugar de JSONArray
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
     }
-    content := file.read_to_string() or {
-        return error('Failed to read file: $file_path')
-    }
-    return json.decode(content) or {
-        return error('Failed to decode JSON from file: $file_path')
-    }
-}
-
-fn main() {
-    // Leer archivos JSON
-    constructors := read_json_file::<[]Driver>('constructors.json') or { return }
-    drivers := read_json_file::<[]Driver>('drivers.json') or { return }
-
-    // Leer archivos CSV y realizar migración a una base de datos
-    // ...
-
-    // Realizar análisis de datos
-    // ...
-
-    // Generar visualizaciones y resultados
-    // ...
 }
